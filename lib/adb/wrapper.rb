@@ -10,6 +10,12 @@ module Adb
       output.match(/Android Debug Bridge version ([\d\.]+)/)[1]
     end
 
+    def devices
+      output = adb ['devices']
+      device_strings = output.lines.select { |line| line.match(/\tdevice$/) }
+      device_strings.map { |line| line.split("\t")[0] }
+    end
+
     def install(apk)
       output = adb ['install', apk]
       true
