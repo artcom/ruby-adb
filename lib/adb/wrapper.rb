@@ -1,7 +1,8 @@
 module Adb
   class Wrapper
-    def initialize(path: 'adb')
-      @path = path
+    def initialize(path: 'adb', device: nil)
+      @command = path
+      @command << " -s #{device}" unless device.nil?
     end
 
     def version
@@ -17,7 +18,7 @@ module Adb
     private
 
     def adb(arguments)
-      `#{@path} #{arguments.join(' ')}`
+      `#{@command} #{arguments.join(' ')}`
     end
   end
 end
