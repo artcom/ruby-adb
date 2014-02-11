@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Adb::VERSION
   spec.authors       = ['ART+COM AG']
   spec.email         = ['info@artcom.de']
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = 'Ruby wrapper for the Android Debug Bridge (adb)'
+  spec.summary       = 'Ruby wrapper for Android adb'
   spec.homepage      = ''
   spec.license       = 'MIT'
 
