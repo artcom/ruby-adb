@@ -1,0 +1,2 @@
+module Adb
+end
