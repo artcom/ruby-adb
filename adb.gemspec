@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['info@artcom.de']
   spec.description   = 'Ruby wrapper for the Android Debug Bridge (adb)'
   spec.summary       = 'Ruby wrapper for Android adb'
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/artcom/ruby-adb'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
