@@ -15,6 +15,11 @@ module Adb
       true
     end
 
+    def uninstall(apk)
+      output = adb ['uninstall', apk]
+      true
+    end
+
     private
 
     def adb(arguments)

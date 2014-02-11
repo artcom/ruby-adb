@@ -15,6 +15,12 @@ describe Adb::Wrapper do
       allow(adb).to receive(:`).with("adb install #{apk}")
       adb.install apk
     end
+
+    it 'uninstalls a package' do
+      package_name = 'com.example.test'
+      allow(adb).to receive(:`).with("adb uninstall #{package_name}")
+      adb.uninstall package_name
+    end
   end
 
   context 'for a specific device' do
@@ -25,6 +31,12 @@ describe Adb::Wrapper do
       apk = 'path_to/my.apk'
       allow(adb).to receive(:`).with("adb -s #{device} install #{apk}")
       adb.install apk
+    end
+
+    it 'uninstalls a package' do
+      package_name = 'com.example.test'
+      allow(adb).to receive(:`).with("adb -s #{device} uninstall #{package_name}")
+      adb.uninstall package_name
     end
   end
 end
