@@ -26,6 +26,11 @@ module Adb
       true
     end
 
+    def reboot
+      adb ['reboot']
+      true
+    end
+
     private
 
     def adb(arguments)

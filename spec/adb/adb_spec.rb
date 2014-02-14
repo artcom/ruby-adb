@@ -40,6 +40,11 @@ describe Adb::Wrapper do
       allow(adb).to receive(:`).with("adb uninstall #{package_name}")
       adb.uninstall package_name
     end
+
+    it 'reboots the device' do
+      allow(adb).to receive(:`).with('adb reboot')
+      adb.reboot
+    end
   end
 
   context 'for a specific device' do
@@ -58,6 +63,11 @@ describe Adb::Wrapper do
         .with("adb -s #{device} uninstall #{package_name}")
 
       adb.uninstall package_name
+    end
+
+    it 'reboots the device' do
+      allow(adb).to receive(:`).with("adb -s #{device} reboot")
+      adb.reboot
     end
   end
 end
