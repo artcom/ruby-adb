@@ -17,12 +17,12 @@ module Adb
     end
 
     def install(apk)
-      output = adb ['install', apk]
+      adb ['install', apk]
       true
     end
 
     def uninstall(apk)
-      output = adb ['uninstall', apk]
+      adb ['uninstall', apk]
       true
     end
 
