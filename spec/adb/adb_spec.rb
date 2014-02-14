@@ -1,22 +1,26 @@
 require 'adb'
 require 'active_support/core_ext/string/strip'
 
-
 describe Adb::Wrapper do
   context 'without specific device' do
     subject(:adb) { Adb::Wrapper.new }
 
     it 'returns the version' do
-      allow(adb).to receive(:`).with('adb version').and_return("Android Debug Bridge version 23.42.1\n")
+      allow(adb).to receive(:`)
+        .with('adb version')
+        .and_return("Android Debug Bridge version 23.42.1\n")
+
       expect(adb.version).to eq('23.42.1')
     end
 
     it 'lists connected devices' do
-      allow(adb).to receive(:`).with('adb devices').and_return <<-EOS.strip_heredoc
+      allow(adb).to receive(:`)
+        .with('adb devices')
+        .and_return <<-EOS.strip_heredoc
         * daemon not running. starting it now on port 5037 *
         * daemon started successfully *
 
-        List of devices attached 
+        List of devices attached
         386ef2b0	device
       EOS
 
@@ -50,7 +54,9 @@ describe Adb::Wrapper do
 
     it 'uninstalls a package' do
       package_name = 'com.example.test'
-      allow(adb).to receive(:`).with("adb -s #{device} uninstall #{package_name}")
+      allow(adb).to receive(:`)
+        .with("adb -s #{device} uninstall #{package_name}")
+
       adb.uninstall package_name
     end
   end
