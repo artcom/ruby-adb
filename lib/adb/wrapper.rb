@@ -46,7 +46,7 @@ module Adb
     private
 
     def adb(arguments)
-      `#{@command} #{arguments.join(' ')}`
+      `#{@command} #{arguments.join(' ')} 2>&1`
     end
   end
 end

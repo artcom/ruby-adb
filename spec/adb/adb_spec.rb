@@ -7,7 +7,7 @@ describe Adb::Wrapper do
 
     it 'lists no devices' do
       allow(adb).to receive(:`)
-        .with('adb devices')
+        .with('adb devices 2>&1')
         .and_return <<-EOS.strip_heredoc
         List of devices attached
       EOS
@@ -18,7 +18,7 @@ describe Adb::Wrapper do
 
     it 'throws when trying to reboot' do
       allow(adb).to receive(:`)
-        .with('adb reboot')
+        .with('adb reboot 2>&1')
         .and_return('error: device not found')
 
       expect { adb.reboot }.to raise_error(Adb::Error, 'device not found')
@@ -30,7 +30,7 @@ describe Adb::Wrapper do
 
     it 'returns the version' do
       allow(adb).to receive(:`)
-        .with('adb version')
+        .with('adb version 2>&1')
         .and_return("Android Debug Bridge version 23.42.1\n")
 
       expect(adb.version).to eq('23.42.1')
@@ -38,7 +38,7 @@ describe Adb::Wrapper do
 
     it 'lists connected devices' do
       allow(adb).to receive(:`)
-        .with('adb devices')
+        .with('adb devices 2>&1')
         .and_return <<-EOS.strip_heredoc
         * daemon not running. starting it now on port 5037 *
         * daemon started successfully *
@@ -54,18 +54,18 @@ describe Adb::Wrapper do
 
     it 'installs a package' do
       apk = 'path_to/my.apk'
-      allow(adb).to receive(:`).with("adb install #{apk}")
+      allow(adb).to receive(:`).with("adb install #{apk} 2>&1")
       adb.install apk
     end
 
     it 'uninstalls a package' do
       package_name = 'com.example.test'
-      allow(adb).to receive(:`).with("adb uninstall #{package_name}")
+      allow(adb).to receive(:`).with("adb uninstall #{package_name} 2>&1")
       adb.uninstall package_name
     end
 
     it 'reboots the device' do
-      allow(adb).to receive(:`).with('adb reboot')
+      allow(adb).to receive(:`).with('adb reboot 2>&1')
       adb.reboot
     end
   end
@@ -76,20 +76,20 @@ describe Adb::Wrapper do
 
     it 'installs a package' do
       apk = 'path_to/my.apk'
-      allow(adb).to receive(:`).with("adb -s #{device} install #{apk}")
+      allow(adb).to receive(:`).with("adb -s #{device} install #{apk} 2>&1")
       adb.install apk
     end
 
     it 'uninstalls a package' do
       package_name = 'com.example.test'
       allow(adb).to receive(:`)
-        .with("adb -s #{device} uninstall #{package_name}")
+        .with("adb -s #{device} uninstall #{package_name} 2>&1")
 
       adb.uninstall package_name
     end
 
     it 'reboots the device' do
-      allow(adb).to receive(:`).with("adb -s #{device} reboot")
+      allow(adb).to receive(:`).with("adb -s #{device} reboot 2>&1")
       adb.reboot
     end
   end
