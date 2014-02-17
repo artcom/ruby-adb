@@ -35,15 +35,7 @@ module Adb
 
     def reboot
       output = adb ['reboot']
-
-      unless output.nil?
-        error_string = output.lines.find do |line|
-          line.start_with?('error: ')
-        end
-
-        error = /error: (.*)/.match(error_string)
-        fail Error, error[1] unless error.nil?
-      end
+      fail Error, output unless output.nil?
     end
 
     private

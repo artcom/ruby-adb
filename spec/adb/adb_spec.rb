@@ -19,13 +19,12 @@ describe Adb::Wrapper do
     it 'throws when trying to reboot' do
       allow(adb).to receive(:`)
         .with('adb reboot 2>&1')
-        .and_return <<-EOS.strip_heredoc
-          error: device not found
-          * daemon not running. starting it now on port 5037 *
-          * daemon started successfully *
-        EOS
+        .and_return 'error: device not found'
 
-      expect { adb.reboot }.to raise_error(Adb::Error, 'device not found')
+      expect { adb.reboot }.to raise_error(
+        Adb::Error,
+        'error: device not found'
+      )
     end
   end
 
