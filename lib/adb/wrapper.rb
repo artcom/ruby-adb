@@ -4,7 +4,10 @@ module Adb
   ##
   # Wrapper for Android adb command line tool
   class Wrapper
-    def initialize(path: 'adb', device: nil)
+    def initialize(
+      path: "#{ENV['ANDROID_HOME']}/platform-tools/adb",
+      device: nil)
+
       @command = path
       @command << " -s #{device}" unless device.nil?
     end

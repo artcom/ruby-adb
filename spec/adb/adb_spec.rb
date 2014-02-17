@@ -3,7 +3,7 @@ require 'active_support/core_ext/string/strip'
 
 describe Adb::Wrapper do
   context 'without a device' do
-    subject(:adb) { Adb::Wrapper.new }
+    subject(:adb) { Adb::Wrapper.new(path: 'adb') }
 
     it 'lists no devices' do
       allow(adb).to receive(:`)
@@ -26,7 +26,7 @@ describe Adb::Wrapper do
   end
 
   context 'with an unspecified device' do
-    subject(:adb) { Adb::Wrapper.new }
+    subject(:adb) { Adb::Wrapper.new(path: 'adb') }
 
     it 'returns the version' do
       allow(adb).to receive(:`)
@@ -72,7 +72,7 @@ describe Adb::Wrapper do
 
   context 'with a specified device' do
     let(:device) { '386ef2b0' }
-    subject(:adb) { Adb::Wrapper.new device: device }
+    subject(:adb) { Adb::Wrapper.new(path: 'adb', device: device) }
 
     it 'installs a package' do
       apk = 'path_to/my.apk'
