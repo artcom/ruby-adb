@@ -35,7 +35,7 @@ module Adb
 
     def reboot
       output = adb ['reboot']
-      fail Error, output unless output.nil?
+      fail Error, output unless output.nil? || output.empty?
     end
 
     private
