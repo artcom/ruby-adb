@@ -1,4 +1,8 @@
 module Adb
+  class Error < RuntimeError; end
+
+  ##
+  # Wrapper for Android adb command line tool
   class Wrapper
     def initialize(path: 'adb', device: nil)
       @command = path
@@ -27,8 +31,13 @@ module Adb
     end
 
     def reboot
-      adb ['reboot']
-      true
+      output = adb ['reboot']
+
+      unless output.nil?
+        last_line = output.lines.to_a.last
+        error = /error: (.*)/.match(last_line)
+        fail Error, error[1] unless error.nil?
+      end
     end
 
     private

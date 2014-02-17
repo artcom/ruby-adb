@@ -2,7 +2,30 @@ require 'adb'
 require 'active_support/core_ext/string/strip'
 
 describe Adb::Wrapper do
-  context 'without specific device' do
+  context 'without a device' do
+    subject(:adb) { Adb::Wrapper.new }
+
+    it 'lists no devices' do
+      allow(adb).to receive(:`)
+        .with('adb devices')
+        .and_return <<-EOS.strip_heredoc
+        List of devices attached
+      EOS
+
+      devices = adb.devices
+      expect(devices).to have(0).item
+    end
+
+    it 'throws when trying to reboot' do
+      allow(adb).to receive(:`)
+        .with('adb reboot')
+        .and_return('error: device not found')
+
+      expect { adb.reboot }.to raise_error(Adb::Error, 'device not found')
+    end
+  end
+
+  context 'with an unspecified device' do
     subject(:adb) { Adb::Wrapper.new }
 
     it 'returns the version' do
@@ -47,7 +70,7 @@ describe Adb::Wrapper do
     end
   end
 
-  context 'for a specific device' do
+  context 'with a specified device' do
     let(:device) { '386ef2b0' }
     subject(:adb) { Adb::Wrapper.new device: device }
 
