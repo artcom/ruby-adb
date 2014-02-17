@@ -37,8 +37,11 @@ module Adb
       output = adb ['reboot']
 
       unless output.nil?
-        last_line = output.lines.to_a.last
-        error = /error: (.*)/.match(last_line)
+        error_string = output.lines.find do |line|
+          line.start_with?('error: ')
+        end
+
+        error = /error: (.*)/.match(error_string)
         fail Error, error[1] unless error.nil?
       end
     end
