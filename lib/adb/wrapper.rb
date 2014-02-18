@@ -4,12 +4,8 @@ module Adb
   ##
   # Wrapper for Android adb command line tool
   class Wrapper
-    def initialize(
-      path: "#{ENV['ANDROID_HOME']}/platform-tools/adb",
-      device: nil)
-
-      @command = path
-      @command << " -s #{device}" unless device.nil?
+    def initialize(path: "#{ENV['ANDROID_HOME']}/platform-tools/adb")
+      @path = path
     end
 
     def version
@@ -23,25 +19,27 @@ module Adb
       device_strings.map { |line| line.split("\t")[0] }
     end
 
-    def install(apk)
-      adb ['install', apk]
+    def install(apk, **options)
+      adb ['install', apk], options
       true
     end
 
-    def uninstall(apk)
-      adb ['uninstall', apk]
+    def uninstall(apk, **options)
+      adb ['uninstall', apk], options
       true
     end
 
-    def reboot
-      output = adb ['reboot']
+    def reboot(**options)
+      output = adb ['reboot'], options
       fail Error, output unless output.nil? || output.empty?
     end
 
     private
 
-    def adb(arguments)
-      `#{@command} #{arguments.join(' ')} 2>&1`
+    def adb(arguments, **options)
+      command = @path
+      command << " -s #{options[:device]}" if options.key?(:device)
+      `#{command} #{arguments.join(' ')} 2>&1`
     end
   end
 end

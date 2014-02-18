@@ -2,9 +2,9 @@ require 'adb'
 require 'active_support/core_ext/string/strip'
 
 describe Adb::Wrapper do
-  context 'without a device' do
-    subject(:adb) { Adb::Wrapper.new(path: 'adb') }
+  subject(:adb) { Adb::Wrapper.new(path: 'adb') }
 
+  context 'without a device' do
     it 'lists no devices' do
       allow(adb).to receive(:`)
         .with('adb devices 2>&1')
@@ -29,8 +29,6 @@ describe Adb::Wrapper do
   end
 
   context 'with an unspecified device' do
-    subject(:adb) { Adb::Wrapper.new(path: 'adb') }
-
     it 'returns the version' do
       allow(adb).to receive(:`)
         .with('adb version 2>&1')
@@ -75,12 +73,11 @@ describe Adb::Wrapper do
 
   context 'with a specified device' do
     let(:device) { '386ef2b0' }
-    subject(:adb) { Adb::Wrapper.new(path: 'adb', device: device) }
 
     it 'installs a package' do
       apk = 'path_to/my.apk'
       allow(adb).to receive(:`).with("adb -s #{device} install #{apk} 2>&1")
-      adb.install apk
+      adb.install apk, device: device
     end
 
     it 'uninstalls a package' do
@@ -88,12 +85,12 @@ describe Adb::Wrapper do
       allow(adb).to receive(:`)
         .with("adb -s #{device} uninstall #{package_name} 2>&1")
 
-      adb.uninstall package_name
+      adb.uninstall package_name, device: device
     end
 
     it 'reboots the device' do
       allow(adb).to receive(:`).with("adb -s #{device} reboot 2>&1")
-      adb.reboot
+      adb.reboot device: device
     end
   end
 end
